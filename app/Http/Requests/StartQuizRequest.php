@@ -18,7 +18,7 @@ class StartQuizRequest extends FormRequest
             'email'      => ['required', 'email'],
             'questions'  => ['required', 'integer', 'min:1', 'max:50'],
             'difficulty' => ['required', 'in:easy,medium,hard'],
-            'type'       => ['required', 'in:multiple,boolean'],
+            'type'       => ['nullable', 'in:multiple,boolean'],
         ];
     }
 }
