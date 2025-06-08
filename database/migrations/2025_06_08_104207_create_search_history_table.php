@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('email');
             $table->unsignedTinyInteger('questions');
             $table->enum('difficulty', ['easy', 'medium', 'hard']);
-            $table->enum('type', ['multiple', 'boolean']);
+            $table->enum('type', ['multiple', 'boolean'])->nullable();
             $table->timestamps();
         });
     }
