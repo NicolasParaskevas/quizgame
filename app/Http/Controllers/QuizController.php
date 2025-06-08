@@ -9,55 +9,48 @@ use App\Models\Search;
 
 class QuizController extends Controller
 {
-    private OpenTriviaService $triviaService;
-
-    public function __construct(OpenTriviaService $triviaService)
-    {
-        $this->triviaService = $triviaService;
-    }
-
     public function index()
     {
-        return view("welcome");
+        return view("quiz");
     }
 
-    public function start(StartQuizRequest $request)
+    public function question(int $index)
     {
-        $data = $request->validated();
-        $entry = Search::create($data);
+        $questions = session("questions");
+        $total     = session("total");
 
-        $response = $this->triviaService->fetch($entry);
-
-        if ($response["error"] !== null)
-        {
-            return redirect()->back()->withErrors([
-                "api_error" => $response["error"]
-            ]);
-        }
-
-        $quiz = $response["quiz"];
-        $filtered = $results
-            ->reject(function($q) {
-                return $q["category"] === "Entertainment: Video Games";
-            })
-            ->sortBy("category")
-            ->values();
-
-        // add quiz in session
-        
-        return redirect("quiz");
-    }
-
-    public function quiz()
-    {
-        $quiz = session("quiz");
-
-        if (empty($quizz))
+        if (!isset($questions[$index]) || empty($questions[$index]))
         {
             abort(404);
         }
 
-        return view("", $quiz);
+        $q = $questions[$index];
+        $answers = collect($q['incorrect_answers'])
+            ->push($q['correct_answer'])
+            ->shuffle();
+        
+        $back = $index - 1;
+
+        if ($index === 0)
+        {
+            $back = null;
+        }
+
+        $next = $index + 1;
+
+        if ($index === (int)$total)
+        {
+            $next = "/results";
+        }
+
+        return response()->json([
+            "quiz"    => $questions[$index],
+            "asnwers" => $answers,
+            "index"   => $index,
+            "total"   => $total,
+            "next"    => $next,
+            "back"    => $back
+        ]);
     }
 
     
@@ -68,6 +61,7 @@ class QuizController extends Controller
 
     public function results()
     {
-
+        $userAnswers = session("answers");
+        dd($userAnswers);
     }
 }
