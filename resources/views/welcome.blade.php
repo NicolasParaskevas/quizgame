@@ -87,6 +87,7 @@
                                 name="type"
                                 class="form-select @error('type') is-invalid @enderror"
                             >
+                                <option value="" {{ old('type') == null ? 'selected' : '' }}>Any</option>
                                 <option value="multiple" {{ old('type') == 'multiple' ? 'selected' : '' }}>Multiple Choice</option>
                                 <option value="boolean" {{ old('type') == 'boolean' ? 'selected' : '' }}>True / False</option>
                             </select>

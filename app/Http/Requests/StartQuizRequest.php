@@ -11,6 +11,14 @@ class StartQuizRequest extends FormRequest
         return true;
     }
 
+    protected function prepareForValidation(): void
+    {
+        // normalize type, if it is an empty string make it null
+        $this->merge([
+            'type' => $this->input('type') ?: null,
+        ]);
+    }
+
     public function rules(): array
     {
         return [
