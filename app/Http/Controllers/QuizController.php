@@ -42,7 +42,7 @@ class QuizController extends Controller
     public function answer(SubmitAnswerRequest $request)
     {
         $data = $request->validated();
-        $index = $data["index"];
+        $index = (int)$data["index"];
         
         $answers = session("answers");
 
@@ -61,16 +61,19 @@ class QuizController extends Controller
             "correct_answer" => $correct_answer
         ];
 
+        session(["answers" => $answers]);
+
         // if we reached the end, then redirect to results page
+        $redirect = false;
         $cap = session("cap");
-        if ($index > $cap)
+        if ($index === $cap)
         {
-            return redirect()->to("results");
+            $redirect = true;
         }
 
-        session("answers", $answers);
-
-        return response()->json(["ok"], 200);
+        return response()->json([
+            "redirect" => $redirect
+        ], 200);
     }
 
     public function results()

@@ -2,8 +2,6 @@ $(function() {
     let index = 0;
     loadQuestion(index);
 
-    $("#current_index").text((index+1));
-
     $("#next-button").on("click", function(e) {
         e.preventDefault();
 
@@ -25,6 +23,10 @@ $(function() {
                 question: $("#question").text()
             },
             success: function(res) {
+                if (res.redirect) {
+                    window.location.href = "/results";
+                }
+
                 index++;
                 loadQuestion(index);
             },
@@ -37,6 +39,8 @@ $(function() {
     });
 
     function loadQuestion(index) {
+        $("#current_index").text((index+1));
+
         $.ajax({
             url: "/question/"+index,
             method: 'GET',
