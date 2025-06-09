@@ -7,29 +7,12 @@ use App\Http\Requests\SubmitAnswerRequest;
 
 class QuizController extends Controller
 {
-    public function index(int $index)
+    public function index()
     {
         $total = session("total");
-
-        $back = $index - 1;
-
-        if ($index === 0)
-        {
-            $back = null;
-        }
-
-        $next = $index + 1;
-
-        if ($index === ($total - 1))
-        {
-            $next = "/results";
-        }
         
         return view("quiz", [
-            "index" => $index,
-            "total" => $total,
-            "next"  => $next,
-            "back"  => $back
+            "total" => $total
         ]);
     }
 
@@ -52,8 +35,7 @@ class QuizController extends Controller
         
         return response()->json([
             "question" => $q["question"],
-            "answers"  => $answers,
-            "index"    => $index
+            "answers"  => $answers
         ]);
     }
 
@@ -63,16 +45,32 @@ class QuizController extends Controller
         $index = $data["index"];
         
         $answers = session("answers");
+
+        // find the correct answer
+        $question = session("questions")[$index];
+
+        $correct_answer = null;
+        if (!empty($question)) 
+        {
+            $correct_answer = $question["correct_answer"];
+        }
+
         $answers[$index] = [
             "question"       => $data["question"],
             "answer"         => $data["answer"],
-            "correct_answer" => $data["correct_answer"]
+            "correct_answer" => $correct_answer
         ];
+
+        // if we reached the end, then redirect to results page
+        $cap = session("cap");
+        if ($index > $cap)
+        {
+            return redirect()->to("results");
+        }
 
         session("answers", $answers);
 
-        $index++;
-        return redirect()->to("quiz", $index);
+        return response()->json(["ok"], 200);
     }
 
     public function results()

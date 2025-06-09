@@ -56,6 +56,6 @@ class HomeController extends Controller
             'cap'       => ($filtered->count() - 1)
         ]);
         
-        return redirect()->route('quiz', ['index' => 0]);
+        return redirect()->route('quiz');
     }
 }

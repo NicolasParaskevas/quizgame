@@ -14,10 +14,9 @@ class SubmitAnswerRequest extends FormRequest
     public function rules(): array
     {
         return [
-            "index"          => "required|integer",
-            "question"       => "required|string",
-            "answer"         => "nullable|string",
-            "correct_answer" => "required|string"
+            "index"    => "required|integer",
+            "question" => "required|string",
+            "answer"   => "nullable|string"
         ];
     }
 }

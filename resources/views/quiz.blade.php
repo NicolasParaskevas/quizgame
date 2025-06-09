@@ -6,23 +6,18 @@
         <div class="col-md-6">
             <div class="card">
                 <div class="card-header">
-                    Quiz Game Question: {{$index+1}} out of {{$total}}
+                    Quiz Game Question: <span id="current_index"></span> out of {{$total}}
                 </div>
                 <div class="card-body">
                     <h5 class="card-title" id="question"></h5>
-                    <input type="hidden" id="current_index" value="{{$index}}">
                     <div id="answers">
                         {{-- populated by js --}}
                     </div>
                 </div>
                 <div class="card-footer">
-                    <div class="btn-wrapper text-center d-flex justify-content-between">
-                        <a class="btn btn-secondary {{ $back ? '' : 'disabled' }}"
-                            href="{{ $back ?? '#' }}">
-                            Back
-                        </a>
-                        <a class="btn btn-primary"
-                            href="{{ $next ?? '#' }}">
+                    <div class="btn-wrapper text-end">
+                        @csrf
+                        <a class="btn btn-primary text" href="{{ $next ?? '#' }}" id="next-button">
                             Next
                         </a>
                     </div>
