@@ -34,7 +34,7 @@ class QuestionService
         ]);
     }
 
-    public function setUserAnswer(int $index, string $answer): void
+    public function setUserAnswer(int $index, array $answer): void
     {
         $answers = $this->getUserAnswers();
         $answers[$index] = $answer;
@@ -67,7 +67,7 @@ class QuestionService
 
     public function getUserAnswers(): array
     {
-        return session(self::SESSION_USER_ANSWERS, []);
+        return session(self::SESSION_USER_ANSWERS);
     }
 
     public function getCorrectAnswer(int $index): string|false
@@ -83,11 +83,11 @@ class QuestionService
 
     public function getTotal(): int
     {
-        return session(self::SESSION_TOTAL, 0);
+        return session(self::SESSION_TOTAL);
     }
 
     public function getCap(): int
     {
-        return session(self::SESSION_CAP, 0);
+        return session(self::SESSION_CAP);
     }
 }

@@ -5,25 +5,23 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Http\Requests\StartQuizRequest;
 use App\Services\OpenTriviaService;
+use App\Services\QuestionService;
 use App\Models\Search;
 
 class HomeController extends Controller
 {
     private OpenTriviaService $triviaService;
+    private QuestionService $questionService;
 
-    public function __construct(OpenTriviaService $triviaService)
+    public function __construct(OpenTriviaService $triviaService, QuestionService $questionService)
     {
         $this->triviaService = $triviaService;
+        $this->questionService = $questionService;
     }
 
     public function index()
     {
-        session()->forget("questions");
-        session()->forget("answers");
-        session()->forget("index");
-        session()->forget("total");
-        session()->forget("cap");
-
+        $this->questionService->forget();
         return view("welcome");
     }
 
@@ -48,13 +46,7 @@ class HomeController extends Controller
             ->sortBy("category")
             ->values();
 
-        session([
-            'questions' => $filtered->toArray(),
-            'answers'   => [],
-            'index'     => 0,
-            'total'     => $filtered->count(),
-            'cap'       => ($filtered->count() - 1)
-        ]);
+        $this->questionService->load($filtered);
         
         return redirect()->route('quiz');
     }
