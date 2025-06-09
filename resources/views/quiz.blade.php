@@ -6,7 +6,7 @@
         <div class="col-md-6">
             <div class="card">
                 <div class="card-header">
-                    Quiz Game Question: <span id="current_index"></span> out of {{$total}}
+                    Quiz Game <span id="category"></span>: <span id="current_index"></span> out of {{$total}}
                 </div>
                 <div class="card-body">
                     <h5 class="card-title" id="question"></h5>

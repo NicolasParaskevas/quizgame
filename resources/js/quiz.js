@@ -46,8 +46,10 @@ $(function() {
             method: 'GET',
             success: function (res) {
                 const question = decodeHtmlEntities(res.question);
+                const category = decodeHtmlEntities(res.category);
 
                 $("#question").text(question);
+                $("#category").text(category);
 
                 $("#answers").html("");
                 

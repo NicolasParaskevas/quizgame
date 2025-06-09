@@ -35,6 +35,7 @@ class QuizController extends Controller
         
         return response()->json([
             "question" => $q["question"],
+            "category" => $q["category"],
             "answers"  => $answers
         ]);
     }
@@ -55,9 +56,15 @@ class QuizController extends Controller
             $correct_answer = $question["correct_answer"];
         }
 
+        $answer = null;
+        if (isset($data["answer"]))
+        {
+            $answer = $data["answer"];
+        }
+
         $answers[$index] = [
             "question"       => $data["question"],
-            "answer"         => $data["answer"],
+            "answer"         => $answer,
             "correct_answer" => $correct_answer
         ];
 
