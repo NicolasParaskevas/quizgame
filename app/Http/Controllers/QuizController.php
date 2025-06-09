@@ -20,7 +20,7 @@ class QuizController extends Controller
 
         $next = $index + 1;
 
-        if ($index === (int)$total)
+        if ($index === ($total - 1))
         {
             $next = "/results";
         }
