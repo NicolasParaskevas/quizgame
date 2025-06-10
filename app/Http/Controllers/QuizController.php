@@ -64,7 +64,7 @@ class QuizController extends Controller
 
         // if we reached the end, then redirect to results page
         $redirect = false;
-        if ($index === $this->questionService->getCap())
+        if ($index >= $this->questionService->getCap())
         {
             $redirect = true;
         }
