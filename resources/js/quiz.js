@@ -25,6 +25,7 @@ $(function() {
             success: function(res) {
                 if (res.redirect) {
                     window.location.href = "/results";
+                    return;
                 }
 
                 index++;
