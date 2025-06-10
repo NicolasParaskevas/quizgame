@@ -1,5 +1,7 @@
 $(function() {
     let index = 0;
+    let isLoading = false;
+
     loadQuestion(index);
 
     $("#next-button").on("click", function(e) {
@@ -7,9 +9,9 @@ $(function() {
 
         const csrf = $('input[name="_token"]').val();
         
-        // we disable button to not trigger index increment again
-        // before question fully loads
-        $("#next-button").prop("disabled", true);
+        if (isLoading) return;
+        
+        isLoading = true;
 
         $.ajax({
             url: "/answer",
@@ -65,12 +67,11 @@ $(function() {
                     $("#answers").append(answer);
                 });
 
-                $("#next-button").prop("disabled", false);
-
+                isLoading = false;
             },
             error: function (res) {
                 $("#question").text("There was an error! " + res.responseJSON.error);
-                $("#next-button").prop("disabled", true);
+                isLoading = false;
             }
         });
     }
